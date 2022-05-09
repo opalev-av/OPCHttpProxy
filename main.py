@@ -21,7 +21,7 @@ def get_tags_values(tags):
         if tag in white_list_tag:
             query_tags.append(tag)
 
-    if len(query_tags)== 0:
+    if len(query_tags) == 0:
         return result
 
     opc = OpenOPC.client()
