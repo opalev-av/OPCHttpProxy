@@ -1,0 +1,9 @@
+{
+	"OPCServer":"Owen.OPCNet.DA.1",
+	"white_list":[
+		"CON1.Unit1.tag1",
+		"CON1.Unit1.tag2",
+		"CON1.Unit1.tag3",
+		"CON1.Unit1.tag4"
+		]	
+}
