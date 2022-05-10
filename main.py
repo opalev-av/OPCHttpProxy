@@ -47,9 +47,9 @@ def request_get_tags():
         data = json.loads(request.data)
         result = get_tags_values(data['tags'])
     except json.JSONDecodeError:
-        return "non json"
+        return json.dumps({'Error': "non json"})
     except KeyError:
-        return "key 'tags' not found"
+        return json.dumps({'Error': "key 'tags' not found"})
 
     return json.dumps(result)
 
