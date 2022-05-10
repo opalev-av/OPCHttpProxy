@@ -11,9 +11,9 @@ CONFIG_FILE = 'config.json'
 OPCServer = ""
 white_list_tag = []
 
-def get_tags_values(tags):
 
-    result = {'tags':[]}
+def get_tags_values(tags):
+    result = {'tags': []}
 
     query_tags = []
 
@@ -23,22 +23,34 @@ def get_tags_values(tags):
 
     if len(query_tags) == 0:
         return result
-
-    opc = OpenOPC.client()
-    opc.connect(OPCServer)
+    try:
+        opc = OpenOPC.client()
+    except OpenOPC.OPCError:
+        return {'Error': "Error initialise OPC Automation"}
+    try:
+        opc.connect(OPCServer)
+    except OpenOPC.OPCError:
+        return {'Error': f'Could not connect {OPCServer}'}
     values_tags = opc.read(query_tags)
     for val in values_tags:
-        result['tags'].append({'tag':val[0], 'value':val[1], 'status':val[2], 'time':[3]})
+        result['tags'].append({'tag': val[0], 'value': val[1], 'status': val[2], 'time': [3]})
     opc.close()
     return result
+
 
 app = Flask(__name__)
 
 
 @app.route('/get-tags', methods=['POST'])
 def request_get_tags():
-    data = json.loads(request.data)
-    result = get_tags_values(data['tags'])
+    try:
+        data = json.loads(request.data)
+        result = get_tags_values(data['tags'])
+    except json.JSONDecodeError:
+        return "non json"
+    except KeyError:
+        return "key 'tags' not found"
+
     return json.dumps(result)
 
 
@@ -47,12 +59,16 @@ def load_config():
     global white_list_tag
     config_file_name = f'{os.path.dirname(os.path.realpath(__name__))}/{CONFIG_FILE}'
 
-    with open(config_file_name,'r') as f:
+    with open(config_file_name, 'r') as f:
         config = json.load(f)
     OPCServer = config['OPCServer']
     white_list_tag = config['white_list']
 
-load_config()
+
+def main():
+    load_config()
+    app.run(port=3090)
 
 
-
+if __name__ == '__main__':
+    main()
