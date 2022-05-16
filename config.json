@@ -5,5 +5,8 @@
 		"CON1.Unit1.tag2",
 		"CON1.Unit1.tag3",
 		"CON1.Unit1.tag4"
-		]	
+		],
+	"listen":"192.168.1.10",
+	"port":3090
+	
 }

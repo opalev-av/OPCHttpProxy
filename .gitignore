@@ -1,2 +1,9 @@
 .idea
 __pycache__
+build
+cnf.json
+dist
+log.txt
+main.spec
+start.cmd
+test.py

@@ -70,7 +70,7 @@ app = Flask(__name__)
 @app.route('/get-tags', methods=['POST'])
 def request_get_tags():
     try:
-        log.debug(f'request {request.remote_addr}, {request.data}')
+        log.debug(f'request {request.remote_addr}, {request.data.decode("utf-8")}')
         data = json.loads(request.data)
         result = get_tags_values(data['tags'])
     except json.JSONDecodeError:
